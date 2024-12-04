@@ -1,0 +1,347 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "accountclosureAccountClosureStepFunctionEventsRuleBD7494AB": {
+      "Properties": {
+        "ScheduleExpression": "rate(1 day)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D",
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "accountclosureAccountClosureStepFunctionEventsRuleRoleBA0216B0",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "accountclosureAccountClosureStepFunctionEventsRuleRoleBA0216B0": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "accountclosureAccountClosureStepFunctionEventsRuleRoleDefaultPolicyC02B55EC": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "accountclosureAccountClosureStepFunctionEventsRuleRoleDefaultPolicyC02B55EC",
+        "Roles": [
+          {
+            "Ref": "accountclosureAccountClosureStepFunctionEventsRuleRoleBA0216B0",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "accountclosureAccountClosureStepFunctionExecutionAbortedAlarm30C208D0": {
+      "Properties": {
+        "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionsAborted",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "accountclosureAccountClosureStepFunctionExecutionFailedAlarm743B4991": {
+      "Properties": {
+        "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionsFailed",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "accountclosureAccountClosureStepFunctionExecutionThrottledAlarm52F548C1": {
+      "Properties": {
+        "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "StateMachineArn",
+            "Value": {
+              "Ref": "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D",
+            },
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "ExecutionThrottled",
+        "Namespace": "AWS/States",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "accountclosureAccountClosureStepFunctionStateMachine7FCD1E9D": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "accountclosureAccountClosureStepFunctionStateMachineRoleDefaultPolicyAB18FB91",
+        "accountclosureAccountClosureStepFunctionStateMachineRoleCA261AF6",
+      ],
+      "Properties": {
+        "DefinitionString": {
+          "Fn::Join": [
+            "",
+            [
+              "{"StartAt":"Set empty pagination token","States":{"Set empty pagination token":{"Type":"Pass","Result":{"PaginationToken":""},"Next":"findAccounts"},"findAccounts":{"Next":"forEachAccountTagged","Type":"Task","Comment":"Find accounts tagged for closure","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:resourcegroupstaggingapi:getResources","Parameters":{"PaginationToken.$":"$.PaginationToken","ResourceTypeFilters":["organizations:account"],"TagFilters":[{"Key":"organizations:account-closure","Values":["REQUESTED"]}]}},"forEachAccountTagged":{"Type":"Map","Comment":"For each account tagged REQUESTED","ResultPath":"$._MapResult","Next":"Additional Pages?","ItemsPath":"$.ResourceTagMappingList","MaxConcurrency":1,"Iterator":{"StartAt":"describeAccount","States":{"describeAccount":{"Next":"isAccountActive","Catch":[{"ErrorEquals":["Organizations.AccountNotFoundException"],"Next":"AccountNotFoundException"}],"Type":"Task","Comment":"Describe Account","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:organizations:describeAccount","Parameters":{"AccountId.$":"States.ArrayGetItem(States.StringSplit($.ResourceARN, '/'), 2)"}},"isAccountActive":{"Type":"Choice","Choices":[{"Variable":"$.Account.Status","StringEquals":"ACTIVE","Next":"closeAccount"}],"Default":"tagAcknowledged"},"tagAcknowledged":{"End":true,"Type":"Task","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:organizations:tagResource","Parameters":{"ResourceId.$":"$.Account.Id","Tags":[{"Key":"organizations:account-closure","Value":"ACKNOWLEDGED"},{"Key":"organizations:account-closure:acknowledged-date","Value.$":"$$.Execution.StartTime"}]}},"closeAccount":{"End":true,"Retry":[{"ErrorEquals":["Organizations.TooManyRequestsException"],"IntervalSeconds":20,"MaxAttempts":2,"BackoffRate":1}],"Catch":[{"ErrorEquals":["Organizations.ConstraintViolationException"],"Next":"AccountClosureLimitReached"}],"Type":"Task","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:organizations:closeAccount","Parameters":{"AccountId.$":"$.Account.Id"}},"AccountClosureLimitReached":{"Type":"Succeed"},"AccountNotFoundException":{"Type":"Succeed","Comment":"Nothing to do, Potential eventual consistency issue"}}}},"Additional Pages?":{"Type":"Choice","Choices":[{"Variable":"$.PaginationToken","StringEquals":"","Next":"Done Paginating"}],"Default":"findAccounts"},"Done Paginating":{"Type":"Succeed"}}}",
+            ],
+          ],
+        },
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "accountclosureAccountClosureStepFunctionStateMachineLogGroupAE23E0DA",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "Level": "ERROR",
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "accountclosureAccountClosureStepFunctionStateMachineRoleCA261AF6",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::StepFunctions::StateMachine",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "accountclosureAccountClosureStepFunctionStateMachineLogGroupAE23E0DA": {
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W86",
+              "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely",
+            },
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/vendedlogs/states/constructs/testAccountClosureStepFunctionStateMachineLog-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "accountclosureAccountClosureStepFunctionStateMachineRoleCA261AF6": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "states.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "accountclosureAccountClosureStepFunctionStateMachineRoleDefaultPolicyAB18FB91": {
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "These are CDK defaults. The 'LogDelivery' actions do not support resource-level authorizations. Any logging is done by State Machine code",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "resourcegroupstaggingapi:getResources",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "tag:*",
+              "Effect": "Allow",
+              "Resource": "*",
+              "Sid": "TagPolicy",
+            },
+            {
+              "Action": "organizations:describeAccount",
+              "Effect": "Allow",
+              "Resource": "arn:aws:organizations::*:account/o-*/*",
+            },
+            {
+              "Action": "organizations:tagResource",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "organizations:closeAccount",
+              "Effect": "Allow",
+              "Resource": "arn:aws:organizations::*:account/o-*/*",
+            },
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "accountclosureAccountClosureStepFunctionStateMachineRoleDefaultPolicyAB18FB91",
+        "Roles": [
+          {
+            "Ref": "accountclosureAccountClosureStepFunctionStateMachineRoleCA261AF6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

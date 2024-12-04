@@ -5,7 +5,7 @@ import { AccountClosureStepFunction } from './constructs/account-closure';
 export class AccountClosureStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
-    new AccountClosureStepFunction(this, "account-closure", {});
+    new AccountClosureStepFunction(this, 'account-closure', {});
   }
 }
 
