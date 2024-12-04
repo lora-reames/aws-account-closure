@@ -1,6 +1,6 @@
 # AWS-Account-Closure
 
-CDK construct and application for automating AWS account closure and dealing with the AWS close account quota which is dynamic.
+CDK application for automating AWS account closure and dealing with the AWS close account quota which is dynamic.
 
 >[!NOTE]
 > You can close only 10% of member accounts, between 10 and 1000, within a rolling 30 day period. This quota is not bound by a calendar month, but starts when you close an account. After you reach this limit, you can't close additional accounts. For more information, see [Closing a member account in your organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html) and [Quotas for AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) in the AWS Organizations User Guide.

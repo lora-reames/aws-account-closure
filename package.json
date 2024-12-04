@@ -1,5 +1,6 @@
 {
   "name": "aws-account-closure",
+  "description": "cdk application for automating AWS account closure and dealing with the AWS close account quota ",
   "scripts": {
     "build": "npx projen build",
     "bundle": "npx projen bundle",
