@@ -1,13 +1,15 @@
 import { awscdk, javascript } from 'projen';
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.1.0',
-  defaultReleaseBranch: 'main',
-  name: 'aws-account-closure',
+  cdkVersion: "2.1.0",
+  defaultReleaseBranch: "main",
+  name: "aws-account-closure",
   packageManager: javascript.NodePackageManager.NPM,
   projenrcTs: true,
-
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
+  deps: [
+    "@aws-solutions-constructs/aws-eventbridge-stepfunctions",
+  ] /* Runtime dependencies of this module. */,
+  description:
+    "cdk construct for automating AWS account closure and dealing with the AWS close account quota "
   // devDeps: [],             /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
 });

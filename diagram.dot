@@ -1,0 +1,170 @@
+digraph "Diagram" {
+  splines = "ortho";
+  pad = "1.0";
+  nodesep = "0.60";
+  ranksep = "0.75";
+  fontname = "Sans-Serif";
+  fontsize = "15";
+  dpi = "200";
+  rankdir = "BT";
+  compound = "true";
+  fontcolor = "#222222";
+  edge [
+    color = "#D5871488",
+    penwidth = 2,
+    arrowhead = "dot",
+    arrowtail = "dot",
+  ];
+  node [
+    shape = "box",
+    style = "rounded",
+    fixedsize = true,
+    width = 1.7,
+    height = 1.7,
+    labelloc = "c",
+    imagescale = true,
+    fontname = "Sans-Serif",
+    fontsize = 8,
+    margin = 8,
+  ];
+  subgraph "aws-account-closure" {
+    subgraph "cluster-SubGraph.aws-account-closure" {
+      graph [
+        label = "aws-account-closure",
+        labelloc = "b",
+        labeljust = "l",
+        margin = "10",
+        fontsize = "16",
+        penwidth = "2",
+        pencolor = "#888888",
+        style = "filled,rounded",
+        fillcolor = "#e4e4e4",
+      ];
+      subgraph "cluster-SubGraph.AccountClosureStepFunction" {
+        graph [
+          label = "AccountClosureStepFunction",
+          labelloc = "b",
+          labeljust = "l",
+          margin = "10",
+          fontsize = "16",
+          penwidth = "2",
+          pencolor = "#888888",
+          style = "filled,rounded",
+          fillcolor = "#c7c7c7",
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachineLogGroup" [
+          label = " StateMachineLogGroup",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Resource/Res_Management-Governance/Res_48_Dark/Res_Amazon-Cloudwatch_Logs_48_Dark_gen.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 2,
+          height = 2.266,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+          label = " StateMachine",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_App-Integration/Arch_64/Arch_AWS-Step-Functions_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.466,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionFailedAlarm" [
+          label = " ExecutionFailedAlarm",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_Management-Governance/64/Arch_Amazon-CloudWatch_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.466,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionThrottledAlarm" [
+          label = "\nExecutionThrottledAla",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_Management-Governance/64/Arch_Amazon-CloudWatch_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.682,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionAbortedAlarm" [
+          label = "\nExecutionAbortedAlarm",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_Management-Governance/64/Arch_Amazon-CloudWatch_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.682,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRuleRole" [
+          label = " EventsRuleRole",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_Security-Identity-Compliance/64/Arch_AWS-Identity-and-Access-Management_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.466,
+        ];
+        "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRule" [
+          label = " EventsRule",
+          fontsize = 12,
+          image = "/Users/lora/.npm/_npx/b98735c91b702b55/node_modules/cdk-dia/icons/aws/Service/Arch_App-Integration/Arch_64/Arch_Amazon-EventBridge_64@5x.png",
+          imagescale = "true",
+          imagepos = "tc",
+          penwidth = "0",
+          shape = "node",
+          fixedsize = "true",
+          labelloc = "b",
+          width = 1.2,
+          height = 1.466,
+        ];
+      }
+    }
+  }
+  "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachineLogGroup" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionFailedAlarm" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionThrottledAlarm" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/ExecutionAbortedAlarm" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRuleRole" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRule" -> "aws-account-closure/account-closure/AccountClosureStepFunction/StateMachine" [
+    dir = "both",
+  ];
+  "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRule" -> "aws-account-closure/account-closure/AccountClosureStepFunction/EventsRuleRole" [
+    dir = "both",
+  ];
+}
